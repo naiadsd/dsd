@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "dsd",
+    "slug": "dsd",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "dsd"
+}
