@@ -10,7 +10,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 
-export default function Login() {
+export default function Login({ navigation }) {
 	return (
 		<View style={styles.full}>
 			<SafeAreaView>
@@ -40,7 +40,11 @@ export default function Login() {
 							secureTextEntry={true}
 							placeholder='password'></TextInput>
 					</View>
-					<TouchableOpacity style={styles.login}>
+					<TouchableOpacity
+						style={styles.login}
+						onPress={() => {
+							navigation.navigate("Customers");
+						}}>
 						<Text style={styles.loginText}>Login</Text>
 					</TouchableOpacity>
 				</View>
