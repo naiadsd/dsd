@@ -6,6 +6,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Customers from "./screens/Customers";
 const Stack = createNativeStackNavigator();
+
+/*
+cd C:\Users\dsdna\AppData\Local\Android\Sdk\emulator
+        .\emulator.exe -avd "Pixel_5"
+
+*/
 export default function App() {
 	return (
 		<NavigationContainer>

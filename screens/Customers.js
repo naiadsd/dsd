@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	View,
 	Text,
@@ -7,14 +7,38 @@ import {
 	Dimensions,
 	TextInput,
 	TouchableOpacity,
+	FlatList,
+	ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import AntIcon from "react-native-vector-icons/AntDesign";
+import { getAllCustomers } from "../services/customers";
+import Customer from "../components/Customer";
 
 export default function Customers() {
 	const heightScreen = Dimensions.get("screen").height;
 	const [totalCustomers, setTotatlCustomers] = useState(100);
-	const [seachText, setSeachText] = useState();
+	const [searchText, setSearchText] = useState();
+	const [customers, setCustomers] = useState([]);
+	const [filterdCustomers, setFilterdCustomers] = useState([]);
+
+	const getCustomers = async () => {
+		const res = await getAllCustomers();
+		console.log(res);
+		setCustomers(res.customers);
+		setFilterdCustomers(res.customers);
+	};
+	useEffect(() => {
+		getCustomers();
+	}, []);
+
+	const filterCustomers = () => {
+		let fcustomers = customers.filter((customer) => {
+			return customer.customerName.search(searchText) > -1;
+		});
+		setFilterdCustomers(fcustomers);
+	};
+
 	return (
 		<SafeAreaView>
 			<View style={styles.topContainer}>
@@ -33,10 +57,17 @@ export default function Customers() {
 					<View style={styles.search}>
 						<View style={styles.searchBox}>
 							<TextInput
-								value={seachText}
+								value={searchText}
 								style={styles.searchText}
-								placeholder='Search customers'></TextInput>
-							<TouchableOpacity>
+								placeholder='Search customers'
+								onChangeText={(val) => {
+									setSearchText(val);
+									filterCustomers();
+								}}></TextInput>
+							<TouchableOpacity
+								onPress={() => {
+									filterCustomers();
+								}}>
 								<Icon
 									name='md-send'
 									size={25}
@@ -52,9 +83,15 @@ export default function Customers() {
 					</View>
 				</View>
 				{/* Customers list*/}
-				<View style={{ ...styles.customers, height: heightScreen - 150 }}>
-					<Text>Customer list</Text>
-				</View>
+				<ScrollView>
+					<View style={{ ...styles.customers, height: heightScreen - 150 }}>
+						<FlatList
+							data={filterdCustomers}
+							renderItem={(item) => (
+								<Customer item={item}></Customer>
+							)}></FlatList>
+					</View>
+				</ScrollView>
 			</View>
 		</SafeAreaView>
 	);
@@ -131,6 +168,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#3D2C8D",
 		borderTopLeftRadius: 30,
 		borderTopRightRadius: 30,
+		paddingTop: 10,
 	},
 	bottomContainer: {},
 });
