@@ -1,5 +1,5 @@
 import React, { Children } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default function Customer({ item }) {
 	const customer = item.item;

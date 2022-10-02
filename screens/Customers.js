@@ -15,7 +15,7 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import { getAllCustomers } from "../services/customers";
 import Customer from "../components/Customer";
 
-export default function Customers() {
+export default function Customers({ navigation }) {
 	const heightScreen = Dimensions.get("screen").height;
 	const [totalCustomers, setTotatlCustomers] = useState(100);
 	const [searchText, setSearchText] = useState();
@@ -24,19 +24,28 @@ export default function Customers() {
 
 	const getCustomers = async () => {
 		const res = await getAllCustomers();
-		console.log(res);
+		// console.log(res);
 		setCustomers(res.customers);
 		setFilterdCustomers(res.customers);
+		setTotatlCustomers(res.customers.length);
 	};
 	useEffect(() => {
 		getCustomers();
 	}, []);
 
 	const filterCustomers = () => {
-		let fcustomers = customers.filter((customer) => {
-			return customer.customerName.search(searchText) > -1;
-		});
-		setFilterdCustomers(fcustomers);
+		console.log("asds");
+		if (searchText.trim().length !== 0) {
+			let fcustomers = customers.filter((customer) => {
+				return (
+					customer.customerName.search(searchText) > -1 ||
+					customer.shipToZip === searchText
+				);
+			});
+			setFilterdCustomers(fcustomers);
+		} else {
+			setFilterdCustomers(customers);
+		}
 	};
 
 	return (
@@ -60,10 +69,7 @@ export default function Customers() {
 								value={searchText}
 								style={styles.searchText}
 								placeholder='Search customers'
-								onChangeText={(val) => {
-									setSearchText(val);
-									filterCustomers();
-								}}></TextInput>
+								onChangeText={setSearchText}></TextInput>
 							<TouchableOpacity
 								onPress={() => {
 									filterCustomers();
@@ -83,15 +89,19 @@ export default function Customers() {
 					</View>
 				</View>
 				{/* Customers list*/}
-				<ScrollView>
-					<View style={{ ...styles.customers, height: heightScreen - 150 }}>
-						<FlatList
-							data={filterdCustomers}
-							renderItem={(item) => (
+
+				<View style={{ ...styles.customers, height: heightScreen - 150 }}>
+					<FlatList
+						data={filterdCustomers}
+						renderItem={(item) => (
+							<TouchableOpacity
+								onPress={() => {
+									navigation.push("Products");
+								}}>
 								<Customer item={item}></Customer>
-							)}></FlatList>
-					</View>
-				</ScrollView>
+							</TouchableOpacity>
+						)}></FlatList>
+				</View>
 			</View>
 		</SafeAreaView>
 	);
