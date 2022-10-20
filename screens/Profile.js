@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import Gradient from "../components/Gradient";
+import DropdownComponent from "../Utils/Dropdown";
+
 export default function Profile() {
 	let name = "Ram";
 	return (
@@ -34,7 +36,14 @@ export default function Profile() {
 						<Text style={styles.dailynote}>daily notes would go here</Text>
 					</View>
 					<View style={styles.actions}>
-						<Text style={styles.username}> actions go here</Text>
+						<TouchableOpacity>
+							<View style={styles.changeRoute}>
+								<Text style={styles.chagneRouteText}>Change Route</Text>
+							</View>
+						</TouchableOpacity>
+						<TouchableOpacity>
+							<DropdownComponent />
+						</TouchableOpacity>
 					</View>
 					<View style={styles.values}>
 						<View style={styles.leftValues}>
@@ -88,10 +97,12 @@ const styles = StyleSheet.create({
 	actions: {
 		minHeight: 100,
 		marginTop: 10,
+		paddingHorizontal: 10,
 		backgroundColor: "#8080ff",
 		borderRadius: 20,
 		alignItems: "center",
-		justifyContent: "center",
+		justifyContent: "space-between",
+		flexDirection: "row",
 	},
 	values: {
 		flex: 1,
@@ -130,5 +141,16 @@ const styles = StyleSheet.create({
 		height: 150,
 		borderRadius: 20,
 		backgroundColor: "#8080ff",
+	},
+	changeRoute: {
+		borderRadius: 20,
+		padding: 10,
+		backgroundColor: "green",
+	},
+	chagneRouteText: {
+		color: "white",
+		fontSize: 15,
+		fontWeight: "300",
+		fontFamily: "Roboto-Black",
 	},
 });

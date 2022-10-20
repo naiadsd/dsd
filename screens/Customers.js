@@ -96,7 +96,7 @@ export default function Customers({ navigation }) {
 						renderItem={(item) => (
 							<TouchableOpacity
 								onPress={() => {
-									navigation.push("Products");
+									navigation.navigate("Products");
 								}}>
 								<Customer item={item}></Customer>
 							</TouchableOpacity>
